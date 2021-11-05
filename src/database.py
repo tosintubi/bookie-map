@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.postgresql import UUID
 import random
 
-db = SQLAlchemy
+db = SQLAlchemy()
 
 
 class User(db.Model):
@@ -27,7 +27,7 @@ class Bookmark(db.Model):
     short_url = db.Column(db.String(3), nullable=True)
     visits = db.Column(db.Integer, default=0)
     # User id Foreignkey
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(UUID, db.ForeignKey('user.id'))
     created_at = db.Column(db.DateTime, default=datetime.now())
     update_at = db.Column(db.DateTime, onupdate=datetime.now())
 
