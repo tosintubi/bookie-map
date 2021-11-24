@@ -25,6 +25,7 @@ class TestUser(TestCase):
                    }
     
         dec_token = Mock()
+        
 
         decoded_token = decode_token(token['id_token'])
         
