@@ -34,3 +34,6 @@ jobs:
     - name: Test with unittest
       run: |
         python -m unittest -v
+      env:
+        TEST_TOKEN: ${{ secrets.TEST_TOKEN }}
+        EMAIL: ${{ secrets.EMAIL }}
