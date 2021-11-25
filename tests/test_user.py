@@ -32,18 +32,6 @@ class TestUser(TestCase):
         self.assertEqual(decoded_token['given_name'], 'Yakitabu')
         self.assertEqual(decoded_token['family_name'], 'Project')
 
-    def my_division_function(a, b):
-        return a / b
-
-    # def test_code_raises_no_exception():
-    #     """
-    #     Assert your python code raises no exception.    
-    #     """
-    #     try:
-    #         my_division_function(10, 5)
-    #     except ZeroDivisionError as exc:
-    #         assert False, f"'10 / 5' raised an exception {exc}"
-
     
     def test_valid_login(self):
         """
