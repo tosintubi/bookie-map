@@ -24,9 +24,6 @@ class TestUser(TestCase):
         token = {
             'id_token': os.environ.get("TEST_TOKEN")
                    }
-    
-        dec_token = Mock()
-        
 
         decoded_token = decode_token(token.get('id_token'))
         logging.info(decoded_token)
@@ -35,7 +32,19 @@ class TestUser(TestCase):
         self.assertEqual(decoded_token['given_name'], 'Yakitabu')
         self.assertEqual(decoded_token['family_name'], 'Project')
 
+    def my_division_function(a, b):
+        return a / b
 
+    # def test_code_raises_no_exception():
+    #     """
+    #     Assert your python code raises no exception.    
+    #     """
+    #     try:
+    #         my_division_function(10, 5)
+    #     except ZeroDivisionError as exc:
+    #         assert False, f"'10 / 5' raised an exception {exc}"
+
+    
     def test_valid_login(self):
         """
         Test case covering Valid Login
@@ -45,14 +54,17 @@ class TestUser(TestCase):
                    }
         flask_app = create_app()
         
-
-        with flask_app.test_client() as test_client:
-            response = test_client.post('http://localhost:5000/api/v1/user/login/google',
-                                        data=json.dumps(token),
-                                        content_type='application/json',
-                                        )
-            self.assertEqual(response.status_code, HTTP_200_OK)
-            # self.assertEqual(response.sta, HTTP_200_OK)
+        try:
+            
+            with flask_app.test_client() as test_client:
+                response = test_client.post('http://localhost:5000/api/v1/user/login/google',
+                                            data=json.dumps(token),
+                                            content_type='application/json',
+                                            )
+                # self.assertRaises(ValueError, decode_token, token)
+        except ValueError as error:
+            self.assertTrue(False)
+            
             
 
     def test_invalid_login(self):
