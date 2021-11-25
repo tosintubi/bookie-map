@@ -38,7 +38,7 @@ def decode_token(token_object):
     # Disabling verification because we don’t have the required certificates to do this verification in google at the moment.
     # try:
     decoded_token = jwt.decode(token_object, verify=False)
-        # return decoded_token
+    return decoded_token
     # except ValueError as ex:
     #     return HTTP_400_BAD_REQUEST
 
@@ -62,7 +62,7 @@ def login():
 
 
     email = google_response.get('email')
-    first_name = google_response.get('given_name')
+    first_name = google_response.get('given_name'),
     last_name = google_response.get('family_name')
     picture_url = google_response.get('picture')
 
