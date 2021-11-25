@@ -51,8 +51,8 @@ class TestUser(TestCase):
                                         data=json.dumps(token),
                                         content_type='application/json',
                                         )
-            # self.assertEqual(response.status_code, HTTP_200_OK)
-            self.assertEqual(200, HTTP_200_OK)
+            self.assertEqual(response.status_code, HTTP_200_OK)
+            # self.assertEqual(response.sta, HTTP_200_OK)
             
 
     def test_invalid_login(self):
