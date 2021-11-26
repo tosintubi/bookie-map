@@ -49,7 +49,6 @@ class TestUser(TestCase):
                                             data=json.dumps(token),
                                             content_type='application/json',
                                             )
-                # self.assertRaises(ValueError, decode_token, token)
         except ValueError as error:
             self.assertTrue(False)
             
@@ -62,16 +61,14 @@ class TestUser(TestCase):
         token = {'id_token': "5om3hcvjhkct.cyfkukbhckyjsjdjsdsdsdtfghjkghv.vjkfyjujhjctrzrerrezxeszZwerzbxd.InvalidTokeN"}
         flask_app = create_app()
         
-        self.assertRaises(ValueError, decode_token, token)
        
-        # with flask_app.test_client() as test_client:
-        #     response = test_client.post('http://localhost:5000/api/v1/user/login/google',
-        #                                 data=json.dumps(token),
-        #                                 content_type='application/json',
-        #                                 )
-        #     self.assertRaises(ValueError,)
-        #     # self.assertEqual(response.status_code, HTTP_400_BAD_REQUEST)
-
+        with flask_app.test_client() as test_client:
+            response = test_client.post('http://localhost:5000/api/v1/user/login/google',
+                                        data=json.dumps(token),
+                                        content_type='application/json',
+                                        )
+            self.assertRaises(ValueError, decode_token, token)
+       
        
     def test_login_get(self):
         """
