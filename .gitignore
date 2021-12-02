@@ -94,3 +94,8 @@ virtualenv/
 
 .DS_Store
 /log
+
+
+/migrations
+migrations
+migrations/
