@@ -5,7 +5,8 @@ from flask_migrate import Migrate
 from dotenv import load_dotenv
 
 from src.models import db
-from src.user import user
+from src.google import google_bp
+from src.home import home
 from src.config.config import TestingConfig
 
 load_dotenv()
@@ -30,5 +31,6 @@ def create_app(test_config=None):
     migrate = Migrate(app,db)
 
     # Register blueprints
-    app.register_blueprint(user)
+    app.register_blueprint(google_bp)
+    app.register_blueprint(home)
     return app
