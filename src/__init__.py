@@ -1,4 +1,5 @@
 import os
+import logging
 
 from flask import Flask
 from flask_migrate import Migrate
@@ -11,18 +12,20 @@ from src.config.config import TestingConfig
 
 load_dotenv()
 
+
+
 def create_app(test_config=None):
     app: Flask = Flask(__name__, instance_relative_config=True)
     
     if test_config is None:
         # Heroku Postgreql hack.
-        db_url = os.environ.get('DATABASE_URL')
-        if db_url.startswith('postgres://'):
-            db_url = db_url.replace('postgres://', 'postgresql://',1)
-            
+        # db_url = os.environ.get('DATABASE_URL')
+        # if db_url.startswith('postgres://'):
+        #     db_url = db_url.replace('postgres://', 'postgresql://',1)
+        
         app.config.from_mapping(
             SECRET_KEY=os.environ.get('SECRET_KEY'),
-            SQLALCHEMY_DATABASE_URI=db_url,
+            SQLALCHEMY_DATABASE_URI=os.environ.get('DATABASE_URL'),
             SQLALCHEMY_TRACK_MODIFICATIONS=False,
             JSON_SORT_KEYS=False
         )
@@ -30,7 +33,7 @@ def create_app(test_config=None):
        app.config.from_mapping(test_config)
 
        
-    # Initializations
+    # Initializations``
     db.app = app
     db.init_app(app)
     migrate = Migrate(app,db)
