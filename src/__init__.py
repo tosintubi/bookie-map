@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 from src.models import db
 from src.google import google_bp
 from src.home import home
+from src.db_migrate import create_tables
 from src.config.config import TestingConfig
 
 load_dotenv()
@@ -37,8 +38,12 @@ def create_app(test_config=None):
     db.app = app
     db.init_app(app)
     migrate = Migrate(app,db)
+    
 
     # Register blueprints
     app.register_blueprint(google_bp)
     app.register_blueprint(home)
+    
+    #create table commands
+    app.cli.add_command(create_tables)
     return app
