@@ -16,7 +16,7 @@ def create_app(test_config=None):
     
     if test_config is None:
         # Heroku Postgreql hack.
-        db_url = str(os.environ.get('DATABASE_URL'))
+        db_url = str(os.environ.get('DATABASE_URI'))
         if db_url.startswith('postgres://'):
             db_url = db_url.replace('postgres://', 'postgresql://')
             
