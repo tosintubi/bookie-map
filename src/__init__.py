@@ -18,7 +18,7 @@ def create_app(test_config=None):
         # Heroku Postgreql hack.
         db_url = str(os.environ.get('DATABASE_URL'))
         if db_url.startswith('postgres://'):
-            db_url = db_url.replace('postgres://', 'postgresql://')
+            db_url = db_url.replace('postgres://', 'postgresql://',1)
             
         app.config.from_mapping(
             SECRET_KEY=os.environ.get('SECRET_KEY'),
