@@ -19,7 +19,7 @@ def create_app(test_config=None):
     app: Flask = Flask(__name__, instance_relative_config=True)
     
     if test_config is None:
-        # Heroku Postgreql hack.
+        # Heroku Postgrseql hack.
         db_url = str(os.environ.get('DATABASE_URL'))
         if db_url.startswith('postgres://'):
             db_url = db_url.replace('postgres://', 'postgresql://',1)
