@@ -7,15 +7,10 @@ from sqlalchemy.dialects.postgresql import UUID
 db = SQLAlchemy()
 
 
-class BookMark(db.Model):
-    __tablename__ = 'author'
+class BookMarks(db.Model):
     id = db.Column(UUID(as_uuid=True), primary_key=True)
-    link = db.Column(db.String(1000), nullable=False)
-    
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        
-        
+    link = db.Column(db.String(200), nullable=False)
+
 class Author(db.Model):
     __tablename__ = 'author'
 
@@ -67,8 +62,6 @@ class UserLogin(db.Model):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-
-
 
 
 class Book(db.Model):
