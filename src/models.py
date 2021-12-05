@@ -6,6 +6,16 @@ from sqlalchemy.dialects.postgresql import UUID
 
 db = SQLAlchemy()
 
+
+class BookMark(db.Model):
+    __tablename__ = 'author'
+    id = db.Column(UUID(as_uuid=True), primary_key=True)
+    link = db.Column(db.String(1000), nullable=False)
+    
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        
+        
 class Author(db.Model):
     __tablename__ = 'author'
 
