@@ -8,10 +8,9 @@ from dotenv import load_dotenv
 from src.models import db
 from src.google import google_bp
 from src.home import home
-from src.db_migrate import create_tables
+from src.manage import create_tables
 
 load_dotenv()
-
 
 
 def create_app(test_config=None):
@@ -33,11 +32,10 @@ def create_app(test_config=None):
        app.config.from_mapping(test_config)
 
        
-    # Initializations``
+    # Initializations
     db.app = app
     db.init_app(app)
     migrate = Migrate(app,db)
-    
 
     # Register blueprints
     app.register_blueprint(google_bp)
