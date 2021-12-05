@@ -15,7 +15,7 @@ load_dotenv()
 def create_app(test_config=None):
     app: Flask = Flask(__name__, instance_relative_config=True)
     
-    if  not test_config:
+    if  test_config is None:
         # Heroku Postgrseql hack.
         db_url = str(os.environ.get('DATABASE_URL'))
         if db_url.startswith('postgres://'):
