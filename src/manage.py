@@ -1,14 +1,10 @@
-# from flask_migrate import Migrate, MigrateCommand
+import click
+from flask.cli import with_appcontext
 
-# from app import app
-# from models import db
+from src import db
+# from src.models import  Author, Book, Borrow, UserLogin, UserProfile
 
-# migrate = Migrate(app, db)
-
-# # manager = Manager(app)
-# # manager.add_command('db', MigrateCommand)
-
-# if __name__ == '__main__':
-#     manager.run()
-
-
+@click.command(name='create_tables')
+@with_appcontext
+def create_tables():
+    db.create_all()
