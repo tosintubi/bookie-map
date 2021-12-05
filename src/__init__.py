@@ -9,7 +9,6 @@ from src.models import db
 from src.google import google_bp
 from src.home import home
 from src.db_migrate import create_tables
-from src.config.config import TestingConfig
 
 load_dotenv()
 
