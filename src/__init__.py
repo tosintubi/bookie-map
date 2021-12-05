@@ -26,7 +26,7 @@ def create_app(test_config=None):
             return 'secret key is missing'
         
         app.config.from_mapping(
-            SECRET_KEY=SECRET_KEY,
+            SECRET_KEY=os.environ.get('SECRET_KEY'),
             SQLALCHEMY_DATABASE_URI=db_url,
             SQLALCHEMY_TRACK_MODIFICATIONS=False,
             JSON_SORT_KEYS=False
