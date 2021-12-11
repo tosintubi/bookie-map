@@ -15,13 +15,14 @@ def get_db_url():
     # Heroku hack
     db_url = str(os.environ.get('DATABASE_URL'))
     if db_url.startswith('postgres://'):
-        db_url = db_url.replace('postgres://', 'postgresql://',1)
+        db_url = db_url.replace('postgres://', 'postgresql://', 1)
     return db_url
 
 def get_secret():
         SECRET_KEY = os.environ.get('SECRET_KEY')
         if not SECRET_KEY:
-            return 'SOME_SECRET'
+            return 'S9M3_ZeCR3T'
+        return SECRET_KEY
     
 def create_app(test_config=None):
     app: Flask = Flask(__name__, instance_relative_config=True)
