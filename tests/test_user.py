@@ -1,3 +1,4 @@
+import os
 import json
 import logging
 from unittest import TestCase, mock
@@ -29,6 +30,7 @@ class TestUser(TestCase):
 
     
     @mock.patch("src.google.login", return_value=200 )
+    @mock.patch.dict(os.environ, {"DATABASE_URL": "postgres://postgres:postgres@localhost/bookie_map_db"})
     def test_valid_login(self,login):
         """
         Test case covering valid login
@@ -44,7 +46,7 @@ class TestUser(TestCase):
             response.status_code = login()
             self.assertEqual(response.status_code, HTTP_200_OK)
 
-
+    @mock.patch.dict(os.environ, {"DATABASE_URL": "postgres://postgres:postgres@<IP>/"})
     def test_invalid_login(self):
         """
         Test case covering Bad Request
