@@ -26,7 +26,7 @@ def create_app(test_config=None):
     app: Flask = Flask(__name__, instance_relative_config=True)
     
     secret_key = os.environ.get('SECRET_KEY')
-    if not secret_key:
+    if  secret_key is None:
         raise Exception("SECRET_KEY does not exist")
     
     db_url = get_db_url()
