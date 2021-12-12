@@ -7,9 +7,6 @@ from sqlalchemy.dialects.postgresql import UUID
 db = SQLAlchemy()
 
 
-class BookMarks(db.Model):
-    id = db.Column(UUID(as_uuid=True), primary_key=True)
-    link = db.Column(db.String(200), nullable=False)
 
 class Author(db.Model):
     __tablename__ = 'author'
@@ -46,7 +43,7 @@ class UserProfile(db.Model):
         super().__init__(**kwargs)
 
     def __repr__(self):
-        return f'User Profile ({self.id})'
+        return f'User Profile ({self.id}, {self.email}, {self.first_name}, {self.last_name})'
 
 class UserLogin(db.Model):
     __tablename__ = 'user_login'
@@ -85,6 +82,9 @@ class Book(db.Model):
     
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+    def __repr__(self):
+        return f'Book  ({self.id}, {self.isbn}, {self.name})'
 
 
 class Borrow(db.Model):

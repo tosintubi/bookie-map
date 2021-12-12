@@ -1,4 +1,5 @@
 import uuid
+import logging
 from datetime import datetime
 
 from flask import Blueprint, jsonify, request
@@ -7,7 +8,7 @@ import validators
 
 from src.models import UserLogin, UserProfile, db
 from src.google import get_user_info
-from src.constants.http_status_codes import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_409_CONFLIT
+from src.constants.http_status_codes import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED, HTTP_409_CONFLIT
 
 
 
@@ -18,7 +19,7 @@ def signup():
     """Endpoint for user signup
 
     Returns:
-        json: user's id, firstname, lastname and email
+        json: user's information
     """
     
     if 'first_name' not in request.json:
@@ -86,4 +87,48 @@ def signup():
     db.session.commit()
     
     return jsonify(get_user_info(new_user.id)), HTTP_201_CREATED
+
+@user_bp.post('/login/user')
+def login():
+    """Login endpoint
+
+    Returns:
+        json: user's information
+    """
     
+    if 'email' not in request.json:
+        return jsonify({
+            'error': "'email' cannot be blank"
+        }), HTTP_400_BAD_REQUEST
+        
+    if 'password' not in request.json:
+        return jsonify({
+            'error': "'password cannot be blank' is missing"
+        }), HTTP_400_BAD_REQUEST
+    
+    email = request.json['email']
+    password = request.json['password']
+    
+    if not validators.email(email):
+        return jsonify({
+            'error': "'email' is invalid"
+        }), HTTP_400_BAD_REQUEST
+
+    # check if user exists
+    usr = UserProfile.query.filter_by(email=email).first()
+    if not usr:
+        return jsonify({
+            'error': "'user' is invalid"
+        }), HTTP_401_UNAUTHORIZED
+    
+    
+    user_login = UserLogin.query.filter_by(user_profile_id=usr.id).first()
+    
+    # Check if password is correct
+    is_valid_pass = check_password_hash(
+        pwhash=user_login.password_hash,
+        password=password)
+    if is_valid_pass:
+        return jsonify(get_user_info(usr.id)), HTTP_200_OK
+    
+    return jsonify({'error':'incorrect password'}), HTTP_401_UNAUTHORIZED
