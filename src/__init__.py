@@ -19,7 +19,7 @@ def get_db_url():
     if db_url:       
         if db_url.startswith('postgres://'):
             db_url = db_url.replace('postgres://', 'postgresql://',1)
-        return db_url
+    return db_url
     
 
 def create_app(test_config=None):
@@ -31,7 +31,7 @@ def create_app(test_config=None):
     
     db_url = get_db_url()
     
-    if not db_url:
+    if db_url is None:
         raise Exception("DATABASE_URL does not exist")
     
     if  not test_config:
