@@ -31,7 +31,7 @@ def create_app(test_config=None):
     
     db_url = get_db_url()
     
-    if db_url is None:
+    if not db_url:
         raise Exception("DATABASE_URL does not exist")
     
     if  not test_config:
