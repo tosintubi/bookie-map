@@ -1,5 +1,6 @@
 import os
 import json
+from datetime import timedelta
 
 from flask import Flask
 from flask.json import jsonify
@@ -48,7 +49,9 @@ def create_app(test_config=None):
             SWAGGER={
                 'title': 'Bookiemap P2P API',
                 'uiversion':3
-            }
+            },
+            JWT_ACCESS_TOKEN_EXPIRES=timedelta(minutes=int(os.environ.get('JWT_ACCESS_TOKEN_EXPIRES'))),
+            JWT_REFRESH_TOKEN_EXPIRES=timedelta(days=int(os.environ.get('JWT_ACCESS_TOKEN_EXPIRES')))
         )
     else:
        app.config.from_mapping(test_config)

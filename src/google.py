@@ -2,6 +2,7 @@ import logging
 import json
 import uuid
 from datetime import datetime
+from flask_jwt_extended.utils import create_access_token, create_refresh_token
 
 from google.auth import jwt
 from flask import Blueprint, jsonify, request
@@ -113,6 +114,16 @@ def get_user_info(uid):
             "error": "This user doesn't have a profile."
             }), HTTP_404_NOT_FOUND
     
+    
+    # Create refresh  and accss token
+    refresh_token = create_refresh_token(identity=user_profile.id)
+    access_token = create_access_token(identity=user_profile.id)
+    
+    auth_tokens = {
+        'refresh': refresh_token,
+        'access': access_token
+    }
+    
     user_info = {
         'id': user_profile.id,
         'first_name': user_profile.first_name,
@@ -120,8 +131,11 @@ def get_user_info(uid):
         'email': user_profile.email,
         'available_points': user_profile.available_points,
         'created_date': user_profile.created_at,
-        'currently_reading': get_last_unreturned_book(user_profile.id)
+        'currently_reading': get_last_unreturned_book(user_profile.id),
+        'tokens': auth_tokens
     }
+    
+    
     return user_info
 
 
