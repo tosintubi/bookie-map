@@ -2,8 +2,11 @@ import os
 import json
 
 from flask import Flask
+from flask.json import jsonify
+from flask_jwt_extended.jwt_manager import JWTManager
 from flask_migrate import Migrate
 from dotenv import load_dotenv
+from src.constants.http_status_codes import HTTP_404_NOT_FOUND, HTTP_500_INTERNAL_SERVER_ERROR
 
 from src.models import db
 from src.google import google_bp
@@ -48,12 +51,29 @@ def create_app(test_config=None):
     db.app = app
     db.init_app(app)
     migrate = Migrate(app,db)
-
-
+    JWTManager(app)
+    
     # Register blueprints
     app.register_blueprint(google_bp)
     app.register_blueprint(user_bp)
     
     #create table commands
     app.cli.add_command(create_tables)
+    
+    
+    # error handling        
+    @app.errorhandler(HTTP_404_NOT_FOUND)
+    def handle_404(e):
+        return jsonify({
+            'error': 'Not found',
+            'code':HTTP_404_NOT_FOUND
+            }), HTTP_404_NOT_FOUND
+
+    # Only works in PROD mode
+    @app.errorhandler(HTTP_500_INTERNAL_SERVER_ERROR)
+    def handle_500(e):
+        return jsonify({
+            'error': 'Something went wrong, we are working on it',
+            'code':HTTP_500_INTERNAL_SERVER_ERROR
+            }), HTTP_500_INTERNAL_SERVER_ERROR
     return app

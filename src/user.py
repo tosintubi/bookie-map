@@ -1,10 +1,14 @@
+from os import access
 import uuid
 import logging
 from datetime import datetime
 
+from flask_jwt_extended.utils import get_jwt_identity
+
+import validators
 from flask import Blueprint, jsonify, request
 from werkzeug.security import check_password_hash, generate_password_hash
-import validators
+from flask_jwt_extended import jwt_required, create_access_token, create_refresh_token
 
 from src.models import UserLogin, UserProfile, db
 from src.google import get_user_info
@@ -121,14 +125,37 @@ def login():
             'error': "'user' is invalid"
         }), HTTP_401_UNAUTHORIZED
     
-    
     user_login = UserLogin.query.filter_by(user_profile_id=usr.id).first()
+    
     
     # Check if password is correct
     is_valid_pass = check_password_hash(
         pwhash=user_login.password_hash,
         password=password)
     if is_valid_pass:
-        return jsonify(get_user_info(usr.id)), HTTP_200_OK
+        
+        # Create refresh  and accss token
+        refresh_token = create_refresh_token(identity=usr.id)
+        access_token = create_access_token(identity=usr.id)
+    
+        user_info =  get_user_info(usr.id)
+        auth_tokens = {
+            'refresh': refresh_token,
+            'access': access_token
+        }
+        user_info.update({'tokens':auth_tokens})
+        
+        # user_info['refresh'] = refresh
+        return jsonify(user_info), HTTP_200_OK
     
     return jsonify({'error':'incorrect password'}), HTTP_401_UNAUTHORIZED
+
+@user_bp.get('/login/user/me')
+@jwt_required()
+def me():
+    user_id = get_jwt_identity()
+    user = UserProfile.query.filter_by(id=user_id).first()
+    return jsonify({
+        'name': user.first_name +" "+ user.last_name,
+        'email': user.email
+    }), HTTP_200_OK
