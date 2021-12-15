@@ -6,12 +6,14 @@ from flask.json import jsonify
 from flask_jwt_extended.jwt_manager import JWTManager
 from flask_migrate import Migrate
 from dotenv import load_dotenv
+from flasgger import Swagger, swag_from
 from src.constants.http_status_codes import HTTP_404_NOT_FOUND, HTTP_500_INTERNAL_SERVER_ERROR
 
 from src.models import db
 from src.google import google_bp
 from src.user import user_bp
 from src.manage import create_tables
+from src.config.swagger import template,swagger_config
 
 load_dotenv()
 
@@ -42,7 +44,11 @@ def create_app(test_config=None):
             SECRET_KEY=secret_key,
             SQLALCHEMY_DATABASE_URI=get_db_url(),
             SQLALCHEMY_TRACK_MODIFICATIONS=False,
-            JSON_SORT_KEYS=False
+            JSON_SORT_KEYS=False,
+            SWAGGER={
+                'title': 'Bookiemap P2P API',
+                'uiversion':3
+            }
         )
     else:
        app.config.from_mapping(test_config)
@@ -60,6 +66,8 @@ def create_app(test_config=None):
     #create table commands
     app.cli.add_command(create_tables)
     
+    # swagger configuration
+    Swagger(app=app, config=swagger_config,template=template)
     
     # error handling        
     @app.errorhandler(HTTP_404_NOT_FOUND)
@@ -76,4 +84,6 @@ def create_app(test_config=None):
             'error': 'Something went wrong, we are working on it',
             'code':HTTP_500_INTERNAL_SERVER_ERROR
             }), HTTP_500_INTERNAL_SERVER_ERROR
+        
+    
     return app

@@ -5,6 +5,7 @@ from datetime import datetime
 
 from google.auth import jwt
 from flask import Blueprint, jsonify, request
+from flasgger import swag_from
 
 from src.constants.http_status_codes import HTTP_200_OK,HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED, HTTP_404_NOT_FOUND
 from src.models import UserLogin, UserProfile, db, Borrow
@@ -40,6 +41,7 @@ def decode_token(token_object):
     
 
 @google_bp.post('/login/google')
+@swag_from('../docs/google/google.yml')
 def login():
        
     if 'id_token' not in request.json:
