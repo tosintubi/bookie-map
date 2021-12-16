@@ -108,16 +108,9 @@ def login():
         
     user_info = get_user_info(user_profile.id)
     
-    # Create refresh  and accss token
-    refresh_token = create_auth_tokens(user_profile.id)
-    access_token = create_auth_tokens(user_profile.id)
+    tokens = create_auth_tokens(user_profile.id)
     
-    auth_tokens = {
-        'refresh': refresh_token,
-        'access': access_token
-    }
-    
-    user_info.update({'tokens':auth_tokens})
+    user_info.update({'tokens':tokens})
     return jsonify(user_info), HTTP_201_CREATED
 
 
