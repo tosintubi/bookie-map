@@ -1,7 +1,7 @@
-User Signup
+Google Authentication
 ---
 tags:
-  - User Signup
+  - Authentication
 parameters:
   - name: body
     description: The body should contain the user's id_token

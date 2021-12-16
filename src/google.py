@@ -8,8 +8,9 @@ from google.auth import jwt
 from flask import Blueprint, jsonify, request
 from flasgger import swag_from
 
-from src.constants.http_status_codes import HTTP_200_OK,HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED, HTTP_404_NOT_FOUND
+from src.constants.http_status_codes import HTTP_200_OK,HTTP_201_CREATED, HTTP_400_BAD_REQUEST,  HTTP_404_NOT_FOUND, HTTP_404_NOT_FOUND
 from src.models import UserLogin, UserProfile, db, Borrow
+from src.auth_tokens import create_auth_tokens
 
 
 google_bp = Blueprint('google', __name__, url_prefix='/api')
@@ -42,7 +43,7 @@ def decode_token(token_object):
     
 
 @google_bp.post('/login/google')
-@swag_from('../docs/google/google.yml')
+@swag_from('../docs/google/login.yml')
 def login():
        
     if 'id_token' not in request.json:
@@ -71,7 +72,7 @@ def login():
     if user_exists:
         user_profile = UserProfile.query.filter_by(email=email).first()
         
-        
+        auth_tokens = create_auth_tokens(user_profile.id)
         user_info = get_user_info(user_profile.id)
         user_info.update({'tokens':auth_tokens})
         
@@ -108,8 +109,8 @@ def login():
     user_info = get_user_info(user_profile.id)
     
     # Create refresh  and accss token
-    refresh_token = create_refresh_token(identity=user_profile.id)
-    access_token = create_access_token(identity=user_profile.id)
+    refresh_token = create_auth_tokens(user_profile.id)
+    access_token = create_auth_tokens(user_profile.id)
     
     auth_tokens = {
         'refresh': refresh_token,
@@ -117,7 +118,7 @@ def login():
     }
     
     user_info.update({'tokens':auth_tokens})
-    return jsonify(user_info), HTTP_200_OK
+    return jsonify(user_info), HTTP_201_CREATED
 
 
 def get_user_info(uid):    

@@ -7,8 +7,9 @@ from flask_jwt_extended.utils import get_jwt_identity
 
 import validators
 from flask import Blueprint, jsonify, request
+from flasgger import swag_from
 from werkzeug.security import check_password_hash, generate_password_hash
-from flask_jwt_extended import jwt_required, create_access_token, create_refresh_token
+from flask_jwt_extended import jwt_required
 
 from src.models import UserLogin, UserProfile, db
 from src.google import get_user_info
@@ -19,7 +20,9 @@ from src.constants.http_status_codes import HTTP_200_OK, HTTP_201_CREATED, HTTP_
 
 user_bp = Blueprint('user', __name__, url_prefix='/api')
 
+
 @user_bp.post('/login/user/signup')
+@swag_from('../docs/user/signup.yml')
 def signup():
     """Endpoint for user signup
 
@@ -98,7 +101,10 @@ def signup():
     
     return jsonify(user_info), HTTP_201_CREATED
 
+
+
 @user_bp.post('/login/user')
+@swag_from('../docs/user/login.yml')
 def login():
     """Login endpoint
 
