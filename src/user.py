@@ -12,6 +12,7 @@ from flask_jwt_extended import jwt_required, create_access_token, create_refresh
 
 from src.models import UserLogin, UserProfile, db
 from src.google import get_user_info
+from src.auth_tokens import create_auth_tokens
 from src.constants.http_status_codes import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED, HTTP_409_CONFLIT
 
 
@@ -61,8 +62,7 @@ def signup():
             'error': "'email' is invalid"
         }), HTTP_400_BAD_REQUEST
         
-    # Check the length of the username.
-    
+    # Check if email is taken    
     if UserProfile.query.filter_by(email=email).first() is not None:
         return jsonify({
             'error': "'email' is already taken"
@@ -90,7 +90,13 @@ def signup():
     db.session.add(user_login)
     db.session.commit()
     
-    return jsonify(get_user_info(new_user.id)), HTTP_201_CREATED
+    user_info = get_user_info(new_user.id)
+        
+    # creates access & refresh tokens and append it to user_info object
+    tokens = create_auth_tokens(new_user.id)      
+    user_info.update({'tokens':tokens})
+    
+    return jsonify(user_info), HTTP_201_CREATED
 
 @user_bp.post('/login/user')
 def login():
@@ -134,18 +140,17 @@ def login():
         password=password)
     if is_valid_pass:
         
-        # Create refresh  and accss token
-        refresh_token = create_refresh_token(identity=usr.id)
-        access_token = create_access_token(identity=usr.id)
-    
-        user_info =  get_user_info(usr.id)
-        auth_tokens = {
-            'refresh': refresh_token,
-            'access': access_token
-        }
-        user_info.update({'tokens':auth_tokens})
         
-        # user_info['refresh'] = refresh
+        user_info =  get_user_info(usr.id)
+        
+        # creates access & refresh tokens and append it to user_info object
+        tokens = create_auth_tokens(usr.id)      
+        user_info.update({'tokens':tokens})
+        
+        # updates last login
+        user_login.last_login = datetime.now()    
+        db.session.commit()
+        
         return jsonify(user_info), HTTP_200_OK
     
     return jsonify({'error':'incorrect password'}), HTTP_401_UNAUTHORIZED

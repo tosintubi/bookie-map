@@ -2,7 +2,7 @@ import logging
 import json
 import uuid
 from datetime import datetime
-from flask_jwt_extended.utils import create_access_token, create_refresh_token
+
 
 from google.auth import jwt
 from flask import Blueprint, jsonify, request
@@ -70,7 +70,12 @@ def login():
 
     if user_exists:
         user_profile = UserProfile.query.filter_by(email=email).first()
-        return jsonify(get_user_info(user_profile.id)), HTTP_200_OK
+        
+        
+        user_info = get_user_info(user_profile.id)
+        user_info.update({'tokens':auth_tokens})
+        
+        return jsonify(user_info), HTTP_200_OK
 
     # User doesn't exist yet, create user profile
     new_user = UserProfile(
@@ -99,8 +104,20 @@ def login():
         return jsonify({
             "error": "This user doesn't have a profile."
             }), HTTP_404_NOT_FOUND
+        
+    user_info = get_user_info(user_profile.id)
     
-    return jsonify(get_user_info(user_profile.id)), HTTP_200_OK
+    # Create refresh  and accss token
+    refresh_token = create_refresh_token(identity=user_profile.id)
+    access_token = create_access_token(identity=user_profile.id)
+    
+    auth_tokens = {
+        'refresh': refresh_token,
+        'access': access_token
+    }
+    
+    user_info.update({'tokens':auth_tokens})
+    return jsonify(user_info), HTTP_200_OK
 
 
 def get_user_info(uid):    
@@ -115,15 +132,6 @@ def get_user_info(uid):
             }), HTTP_404_NOT_FOUND
     
     
-    # Create refresh  and accss token
-    refresh_token = create_refresh_token(identity=user_profile.id)
-    access_token = create_access_token(identity=user_profile.id)
-    
-    auth_tokens = {
-        'refresh': refresh_token,
-        'access': access_token
-    }
-    
     user_info = {
         'id': user_profile.id,
         'first_name': user_profile.first_name,
@@ -131,8 +139,7 @@ def get_user_info(uid):
         'email': user_profile.email,
         'available_points': user_profile.available_points,
         'created_date': user_profile.created_at,
-        'currently_reading': get_last_unreturned_book(user_profile.id),
-        'tokens': auth_tokens
+        'currently_reading': get_last_unreturned_book(user_profile.id)
     }
     
     
