@@ -114,9 +114,14 @@ def login():
     return jsonify(user_info), HTTP_201_CREATED
 
 
-def get_user_info(uid):    
-    """
-    Returns a user's profile information using the user_id
+def get_user_info(uid):   
+    """retrieves the user's information using the user's UUID.
+
+    Args:
+        uid ([UUID]): ID of the user
+
+    Returns:
+        json: user's information
     """
     user_profile = UserProfile.query.filter_by(id=uid).first()
     
@@ -136,13 +141,16 @@ def get_user_info(uid):
         'currently_reading': get_last_unreturned_book(user_profile.id)
     }
     
-    
     return user_info
 
 
 def get_last_unreturned_book(user_id):
-    """
-    Returns the last book a user borrowed.
+    """retrieves the user's last borrowed book that has not been returned.
+    Args:
+        uid ([UUID]): ID of the user
+
+    Returns:
+        json: book's title and author
     """
     last_borrowed = Borrow.query.filter_by(
         borrower=user_id,
