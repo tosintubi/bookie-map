@@ -15,8 +15,7 @@ class TestUser(TestCase):
 
     @mock.patch("src.google.decode_token", return_value={
         'given_name': 'Yakitabu',
-        'family_name': 'Project'
-                
+        'family_name': 'Project'     
     })
     def test_token_decode(self, decode_token):
         """
@@ -28,9 +27,15 @@ class TestUser(TestCase):
         self.assertEqual(decoded_token['given_name'], 'Yakitabu')
         self.assertEqual(decoded_token['family_name'], 'Project')
 
+
+    def test_invalid_token(self):
+        token = {'id_token': "5om3hcvjhkct"}
+        self.assertRaises(ValueError, decode_token, 
+                            token_object=token)
+    
     
     @mock.patch("src.google.login", return_value=200 )
-    # @mock.patch.dict(os.environ, {"DATABASE_URL": "postgres://postgres:postgres@localhost/bookie_map_db"})
+    @mock.patch.dict(os.environ, {"DATABASE_URL": "postgres://postgres:postgres@<IP>/<some_db>"})
     def test_valid_login(self,login):
         """
         Test case covering valid login
@@ -46,12 +51,13 @@ class TestUser(TestCase):
             response.status_code = login()
             self.assertEqual(response.status_code, HTTP_200_OK)
 
-    # @mock.patch.dict(os.environ, {"DATABASE_URL": "postgres://postgres:postgres@<IP>/"})
-    def test_invalid_login(self):
+
+    @mock.patch("src.google.login", return_value=400 )
+    def test_invalid_login(self, login):
         """
         Test case covering Bad Request
         """
-        token = {'id_token': "5om3hcvjhkct.cyfkukbhckyjsjdjsdsdsdtfghjkghv.vjkfyjujhjctrzrerrezxeszZwerzbxd.InvalidTokeN"}
+        token = {'id_token': "5om3hcvjhkct.cyfk"}
         flask_app = create_app()
         
        
@@ -60,14 +66,16 @@ class TestUser(TestCase):
                                         data=json.dumps(token),
                                         content_type='application/json',
                                         )
+            response.status_code = login()
+            
             self.assertRaises(ValueError, decode_token, token)
+            self.assertEqual(response.status_code, HTTP_400_BAD_REQUEST)
        
-       
+    
     def test_login_get(self):
         """
         Test case covering unsupported METHOD: POST
         """
-
         flask_app = create_app()
 
         with flask_app.test_client() as test_client:
