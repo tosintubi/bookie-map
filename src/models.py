@@ -20,6 +20,9 @@ class Author(db.Model):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+    
+    def __repr__(self):
+        return f'Author  ({self.id}, {self.first_name}, {self.last_name})'
         
 class UserProfile(db.Model):
     __tablename__ = 'user_profile'
@@ -60,6 +63,8 @@ class UserLogin(db.Model):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
+    def __repr__(self):
+        return f'User Login ({self.id}, {self.is_active}, {self.user_profile_id}, {self.created_at}, {self.updated_at})'
 
 class Book(db.Model):
     __tablename__ = 'book'
@@ -84,7 +89,7 @@ class Book(db.Model):
         super().__init__(**kwargs)
 
     def __repr__(self):
-        return f'Book  ({self.id}, {self.isbn}, {self.name})'
+        return f'Book  ({self.id}, {self.isbn}, {self.name}, {self.author_id})'
 
 
 class Borrow(db.Model):
@@ -102,6 +107,3 @@ class Borrow(db.Model):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-
-
-
