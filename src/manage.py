@@ -20,7 +20,9 @@ def drop_create():
     db.drop_all()
     db.create_all()
 
-# Thus custom enables the 
+# Thus custom enables the generation of seed data into the local and staging db.
+# To generate seed, user needs to run `flask generate_seed [number]` in the terminal
+# `number` represents the number of seed data to generate.
 @click.command(name='generate_seed')
 @click.argument("number")
 @with_appcontext
