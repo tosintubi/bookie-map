@@ -2,6 +2,7 @@ import os
 import json
 from datetime import timedelta
 
+import cloudinary
 from flask import Flask
 from flask.json import jsonify
 from flask_jwt_extended.jwt_manager import JWTManager
@@ -13,6 +14,7 @@ from src.constants.http_status_codes import HTTP_404_NOT_FOUND, HTTP_500_INTERNA
 from src.models import db
 from src.google import google_bp
 from src.user import user_bp
+from src.book import book_bp
 from src.manage import create_tables, drop_create, generate_data
 from src.config.swagger import template,swagger_config
 
@@ -40,6 +42,16 @@ def create_app(test_config=None):
     if db_url is None:
         raise Exception("DATABASE_URL does not exist")
     
+    
+    cld_name = os.environ.get('CLD_CLOUD_NAME')
+    cld_api_key = os.environ.get('CLD_CLOUDINARY_API_KEY')
+    cld_secret = os.environ.get('CLD_CLOUDINARY_SECRET')
+    if not (cld_name and cld_api_key and cld_secret):
+         raise Exception("One or more Cloudinary credentials are missing")
+     
+    cloudinary.config(cloud_name = cld_name, api_key=cld_api_key, 
+                      api_secret=cld_secret)
+    
     if  not test_config:
         app.config.from_mapping(
             SECRET_KEY=secret_key,
@@ -51,7 +63,7 @@ def create_app(test_config=None):
                 'uiversion':3
             },
             JWT_ACCESS_TOKEN_EXPIRES=timedelta(minutes=int(os.environ.get('JWT_ACCESS_TOKEN_EXPIRES'))),
-            JWT_REFRESH_TOKEN_EXPIRES=timedelta(days=int(os.environ.get('JWT_ACCESS_TOKEN_EXPIRES')))
+            JWT_REFRESH_TOKEN_EXPIRES=timedelta(days=int(os.environ.get('JWT_ACCESS_TOKEN_EXPIRES'))) 
         )
     else:
        app.config.from_mapping(test_config)
@@ -65,6 +77,7 @@ def create_app(test_config=None):
     # Register blueprints
     app.register_blueprint(google_bp)
     app.register_blueprint(user_bp)
+    app.register_blueprint(book_bp)
     
     #create table commands
     app.cli.add_command(create_tables)
