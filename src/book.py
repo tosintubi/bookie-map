@@ -66,4 +66,4 @@ def create_book():
     db.session.add(book)
     db.session.commit()
     
-    return "book created", HTTP_201_CREATED
+    return jsonify(book), HTTP_201_CREATED

@@ -14,7 +14,7 @@ def create_tables():
     db.create_all()
 
 
-# This deletes the 
+# This drop and recreate the tables
 @click.command(name='drop_create_tables')
 @with_appcontext
 def drop_create():
