@@ -11,7 +11,7 @@ from src.models import Author, Book, UserProfile, UserLogin
 faker = Faker(['en_CA', 'en_AU', 'en_GB', 'de_DE', 'en_US'])
 
 # setting a seed so the results are reproducible.
-faker.seed(25)
+Faker.seed(25)
 
 book_categories = ['adventure', 'humor', 'philosophy', 'science', 'drama', 'psychology', 'tech'
                    'religion', 'politics', 'action', 'travel', 'comedy', 'self-help']
