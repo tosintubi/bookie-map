@@ -4,7 +4,7 @@
 </p>
 
 
-<h3 align="center">BookieMap API</h3>
+<h3 align="center">BookieMap</h3>
 
 <div align="center">
 
@@ -34,7 +34,7 @@
 
 ## 🧐 About <a name = "about"></a>
 
-Bookie-Map is the backend of <b>Yakitabu</b>, a Peer to Peer Book Loan App.
+Bookie-Map core is the backend of <b>Bookie</b>, a Peer to Peer Book Loan App.
 
 
 ## 💻 Tech <a name = "tech"></a>
