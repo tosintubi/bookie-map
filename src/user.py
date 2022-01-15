@@ -104,6 +104,7 @@ def signup():
 
 
 @user_bp.post('/login/user')
+@swag_from('../docs/signup/user.yml')
 def login():
     """Login endpoint
 
