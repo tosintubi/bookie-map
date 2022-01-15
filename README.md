@@ -66,8 +66,6 @@ pip install -r requirements.txt
 
 That is all, you have successfully created your own virtual environment. Now you can run Python (see above) and start working on your project.
 
-<br/>
-
 ### Windows 10 Users
 
 Please install and set up the following packages first. Upgrade if you find the package is already installed:
@@ -124,7 +122,6 @@ Note: The database need to be have been created and the `DATABASE_URL` environme
   ```sh
   flask generate_data [NUMBER]
   ```
-<br/>
 
 ## Using the API Endpoint.
 * Run server to ensure everything is running properly.
@@ -134,17 +131,12 @@ Note: The database need to be have been created and the `DATABASE_URL` environme
   ```
 * Refer to the [API documentation](http://127.0.0.1:5000/#/)
 
-<br/>
-
 ## OAth Setup Intstructions
 ### Google
 * TBD
 
 
-<br/>
-
-
-### Python installation instructions for Windows, macOS and other Linux distro Users
+## Python installation instructions for Windows, macOS and other Linux distro Users
 
 - The following may serve as a guide:
   - (https://www.python.org/downloads/)
