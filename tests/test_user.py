@@ -1,6 +1,5 @@
 import os
 import json
-import logging
 from unittest import TestCase, mock
 
 from dotenv import load_dotenv
