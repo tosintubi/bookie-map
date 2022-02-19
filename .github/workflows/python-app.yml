@@ -51,7 +51,6 @@ jobs:
         CLD_CLOUDINARY_API_KEY: ${{ secrets.CLD_CLOUDINARY_API_KEY}}
         CLD_CLOUDINARY_SECRET: ${{ secrets.CLD_CLOUDINARY_SECRET }}
       run: |
-          flask db migrate  
           flask db upgrade
 
     - name: Test using unittest
