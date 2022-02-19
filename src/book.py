@@ -16,7 +16,7 @@ book_bp = Blueprint('book', __name__, url_prefix='/api')
 
 
 @book_bp.post('/books')
-@swag_from('./docs/book/create.yml')
+@swag_from('../docs/book/create.yml')
 def create_book():
     file = request.files['image']
     
