@@ -47,10 +47,8 @@ def create_app(test_config=None):
     cld_api_key = os.environ.get('CLD_CLOUDINARY_API_KEY')
     cld_secret = os.environ.get('CLD_CLOUDINARY_SECRET')
     if not (cld_name and cld_api_key and cld_secret):
-         raise Exception("One or more Cloudinary credentials are missing")
-     
-    cloudinary.config(cloud_name = cld_name, api_key=cld_api_key, 
-                      api_secret=cld_secret)
+        raise Exception("One or more Cloudinary credentials are missing")
+    cloudinary.config(cloud_name = cld_name, api_key=cld_api_key, api_secret=cld_secret)
     
     if  not test_config:
         app.config.from_mapping(
@@ -66,8 +64,8 @@ def create_app(test_config=None):
             JWT_REFRESH_TOKEN_EXPIRES=timedelta(days=int(os.environ.get('JWT_ACCESS_TOKEN_EXPIRES'))) 
         )
     else:
-       app.config.from_mapping(test_config)
-       
+        app.config.from_mapping(test_config)
+        
     # Initializations.
     db.app = app
     db.init_app(app)
