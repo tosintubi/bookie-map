@@ -8,7 +8,7 @@ from flasgger import swag_from
 from flask import Blueprint, jsonify, request
 from cloudinary.uploader import upload
 
-from src.models import Author, Book,  db
+from src.models import Author, Book, db
 from src.google import get_user_info
 from src.constants.http_status_codes import HTTP_201_CREATED, HTTP_400_BAD_REQUEST,HTTP_400_BAD_REQUEST, HTTP_500_INTERNAL_SERVER_ERROR
 
