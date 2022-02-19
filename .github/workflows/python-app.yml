@@ -48,3 +48,15 @@ jobs:
         CLD_CLOUD_NAME: ${{ secrets.CLD_CLOUD_NAME }}
         CLD_CLOUDINARY_API_KEY: ${{ secrets.CLD_CLOUDINARY_API_KEY}}
         CLD_CLOUDINARY_SECRET: ${{ secrets.CLD_CLOUDINARY_SECRET }}
+        
+    - name: Run Migrations
+      env:
+        TEST_TOKEN: ${{ secrets.TEST_TOKEN }}
+        DATABASE_URL: ${{ secrets.DATABASE_URI}}
+        EMAIL: ${{ secrets.EMAIL }}
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        CLIENT_ID: ${{ secrets.CLIENT_ID}}
+        TOKEN_ISSUER: ${{ secrets.TOKEN_ISSUER}}
+      run: |
+          flask db migrate  
+          flask db upgrade
