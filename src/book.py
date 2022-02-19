@@ -1,7 +1,5 @@
 
 import uuid
-import os
-import logging
 from datetime import datetime
 
 from flasgger import swag_from
@@ -10,7 +8,7 @@ from cloudinary.uploader import upload
 
 from src.models import Author, Book, db
 from src.google import get_user_info
-from src.constants.http_status_codes import HTTP_201_CREATED, HTTP_400_BAD_REQUEST,HTTP_400_BAD_REQUEST, HTTP_500_INTERNAL_SERVER_ERROR
+from src.constants.http_status_codes import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_500_INTERNAL_SERVER_ERROR
 
 book_bp = Blueprint('book', __name__, url_prefix='/api')
 
