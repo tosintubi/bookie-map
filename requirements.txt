@@ -6,6 +6,7 @@ certifi==2021.10.8
 cffi==1.15.0
 charset-normalizer==2.0.7
 click==7.1.2
+cloudinary==1.28.1
 cryptography==35.0.0
 decorator==5.1.0
 Faker==11.1.0
@@ -16,6 +17,7 @@ Flask-DotEnv==0.1.2
 Flask-JWT-Extended==4.3.1
 flask-marshmallow==0.14.0
 Flask-Migrate==3.1.0
+Flask-Script==2.0.6
 Flask-SQLAlchemy==2.5.1
 google-auth==2.3.3
 google-oauth==1.0.1
