@@ -37,23 +37,23 @@ jobs:
         
       
     
-    - name: Run Migrations
-      env:
-        TEST_TOKEN: ${{ secrets.TEST_TOKEN }}
-        DATABASE_URL: ${{ secrets.DATABASE_URI}}
-        EMAIL: ${{ secrets.EMAIL }}
-        SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        CLIENT_ID: ${{ secrets.CLIENT_ID}}
-        TOKEN_ISSUER: ${{ secrets.TOKEN_ISSUER}}
-        JWT_ACCESS_TOKEN_EXPIRES: ${{ secrets.JWT_ACCESS_TOKEN_EXPIRES }}
-        JWT_REFRESH_TOKEN_EXPIRES: ${{ secrets.JWT_REFRESH_TOKEN_EXPIRES }}
-        CLD_CLOUD_NAME: ${{ secrets.CLD_CLOUD_NAME }}
-        CLD_CLOUDINARY_API_KEY: ${{ secrets.CLD_CLOUDINARY_API_KEY}}
-        CLD_CLOUDINARY_SECRET: ${{ secrets.CLD_CLOUDINARY_SECRET }}
-      run: |
-          flask db init
-          flask db migrate  
-          flask db upgrade
+    # - name: Run Migrations
+    #   env:
+    #     TEST_TOKEN: ${{ secrets.TEST_TOKEN }}
+    #     DATABASE_URL: ${{ secrets.DATABASE_URI}}
+    #     EMAIL: ${{ secrets.EMAIL }}
+    #     SECRET_KEY: ${{ secrets.SECRET_KEY }}
+    #     CLIENT_ID: ${{ secrets.CLIENT_ID}}
+    #     TOKEN_ISSUER: ${{ secrets.TOKEN_ISSUER}}
+    #     JWT_ACCESS_TOKEN_EXPIRES: ${{ secrets.JWT_ACCESS_TOKEN_EXPIRES }}
+    #     JWT_REFRESH_TOKEN_EXPIRES: ${{ secrets.JWT_REFRESH_TOKEN_EXPIRES }}
+    #     CLD_CLOUD_NAME: ${{ secrets.CLD_CLOUD_NAME }}
+    #     CLD_CLOUDINARY_API_KEY: ${{ secrets.CLD_CLOUDINARY_API_KEY}}
+    #     CLD_CLOUDINARY_SECRET: ${{ secrets.CLD_CLOUDINARY_SECRET }}
+    #   run: |
+    #       flask db
+    #       flask db migrate  
+    #       flask db upgrade
 
     - name: Test using unittest
       run: |
