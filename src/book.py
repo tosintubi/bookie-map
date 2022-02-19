@@ -12,7 +12,6 @@ from src.constants.http_status_codes import HTTP_201_CREATED, HTTP_400_BAD_REQUE
 
 book_bp = Blueprint('book', __name__, url_prefix='/api')
 
-
 @book_bp.post('/books')
 @swag_from('../docs/book/create.yml')
 def create_book():
