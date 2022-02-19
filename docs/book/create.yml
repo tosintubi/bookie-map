@@ -63,9 +63,9 @@ parameters:
     type: "file"
 
 responses:
- 
   201:
     description: New Book is uploaded and created.
-
   400:
     description: Unable to create book.
+  404:
+    description: User with supplied user_id is not found.
