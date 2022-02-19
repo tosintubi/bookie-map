@@ -53,7 +53,7 @@ def login():
     Returns:
         json: user_info.
     """
-    
+     
     if 'id_token' not in request.json:
         return jsonify({
             'error': "id_token is missing from request"
@@ -108,21 +108,22 @@ def login():
         return jsonify({
             'error': "the token payload does not contain last_name"
         }), HTTP_400_BAD_REQUEST
-        
+
+
     # Check if user already exists. If no, create their profile
     user_exists = UserProfile.query.filter_by(email=email).first()
-    
+
     # user already exists, just return their profile information
     if user_exists:
         user_login = UserLogin.query.filter_by(user_profile_id=user_exists.id).first()
         
         # update their last login.
         user_login.last_login = datetime.now()
-        
+               
         db.session.commit()
         
         return jsonify(get_user_info(user_exists.id)), HTTP_200_OK
-    
+
     # User does not exist yet, create user profile
     new_user = UserProfile(
         id=uuid.uuid4(),

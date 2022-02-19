@@ -161,7 +161,6 @@ def login():
     
     return jsonify({'error':'incorrect password'}), HTTP_401_UNAUTHORIZED
 
-
 @user_bp.get('/login/user/me')
 @jwt_required()
 def me():
