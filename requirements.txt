@@ -33,7 +33,7 @@ jsonschema==4.3.0
 Mako==1.1.5
 MarkupSafe==2.0.1
 marshmallow==3.14.0
-mistune==2.0.0
+mistune==2.0.3
 packaging==21.2
 pluggy==1.0.0
 psycopg2==2.9.2
