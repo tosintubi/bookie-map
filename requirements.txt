@@ -58,5 +58,5 @@ toml==0.10.2
 tqdm==4.62.3
 urllib3==1.26.7
 validators==0.18.2
-Werkzeug==2.0.2
+Werkzeug==2.2.3
 zipp==3.6.0
